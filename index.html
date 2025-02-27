@@ -6,18 +6,17 @@
     <title>on/off</title>
     <link rel="stylesheet" href="home.css">
     <style>
-
         body {
             font-family: Arial, sans-serif;
-            background-color: #ffffff;
-            color: #000000;
+            background-color: #121212;
+            color: #ffffff;
             text-align: center;
             transition: background 0.3s, color 0.3s;
         }
 
-        .dark-mode {
-            background-color: #121212;
-            color: #ffffff;
+        .light-mode {
+            background-color: #ffffff;
+            color: #000000;
         }
 
         .toggle-container {
@@ -26,13 +25,13 @@
             right: 10px;
             display: flex;
             align-items: center;
-            cursor:all-scroll;
+            cursor: pointer;
         }
 
         .toggle-switch {
             width: 50px;
             height: 25px;
-            background-color: #ccc;
+            background-color: #666;
             border-radius: 25px;
             position: relative;
             transition: background 0.2s;
@@ -46,17 +45,17 @@
             background-color: white;
             border-radius: 50%;
             top: 50%;
-            left: 5px;
+            left: 25px;
             transform: translateY(-50%);
             transition: 0.3s;
         }
 
-        .dark-mode .toggle-switch {
-            background-color: #666;
+        .light-mode .toggle-switch {
+            background-color: #ccc;
         }
 
-        .dark-mode .toggle-switch::before {
-            left: 25px;
+        .light-mode .toggle-switch::before {
+            left: 5px;
         }
 
         .sun-moon {
@@ -69,7 +68,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            
             gap: 10px;
             margin-top: 50px;
             border-radius: 25px;
@@ -91,26 +89,25 @@
             width: 100%;
             height: 100%;
             display: block;
-            mix-blend-mode:hard-light;
+            mix-blend-mode: hard-light;
             opacity: 1;
             position: absolute; 
             top: 0;
             left: 0;
             z-index: -1; 
         }
-    @media (max-width: 480px) {
-       .displayimage img {
-        background-size: contain;
-       }
-    }
-        
+
+        @media (max-width: 480px) {
+            .displayimage img {
+                background-size: contain;
+            }
+        }
     </style>
 </head>
-<body>
-
+<body class="dark-mode">
     <div class="toggle-container" onclick="toggleDarkMode()">
         <div class="toggle-switch"></div>
-        <span class="sun-moon" id="modeIcon">☀︎</span>
+        <span class="sun-moon" id="modeIcon">☾</span>
     </div>
 
     <div class="input-container">
@@ -119,83 +116,25 @@
     </div>
 
     <div class="displayimage">
-        <img id="displayedImage" src="" >
+        <img id="displayedImage" src="">
     </div>
 
     <script>
-        let isDarkMode = false;
+        let isDarkMode = true;
 
-        const dayImages = [
-            "images/A.jpg",
-            "images/B.png",
-            "images/C.jpg",
-            "images/D.jpg",
-            "images/E.jpg",
-            "images/F.jpg",
-            "images/G.jpg",
-            "images/H.jpg",
-            "images/I.jpg",
-            "images/J.jpg",
-            "images/K.jpg",
-            "images/L.jpg",
-            "images/M.jpg",
-            "images/N.jpg",
-            "images/O.jpg",
-            "images/P.jpg",
-            "images/Q.jpg",
-            "images/R.jpg",
-            "images/S.jpg",
-            "images/T.jpg",
-            "images/U.jpg",
-            "images/V.jpg",
-            "images/W.jpg",
-            "images/X.jpg",
-            "images/Y.jpg",
-            "images/Z.jpg"
-        ];
-
-        const nightImages = [
-            "images/A.jpg",
-            "images/B.png",
-            "images/C.jpg",
-            "images/D.jpg",
-            "images/E.jpg",
-            "images/F.jpg",
-            "images/G.jpg",
-            "images/H.jpg",
-            "images/I.jpg",
-            "images/J.jpg",
-            "images/K.jpg",
-            "images/L.jpg",
-            "images/M.jpg",
-            "images/N.jpg",
-            "images/O.jpg",
-            "images/P.jpg",
-            "images/Q.jpg",
-            "images/R.jpg",
-            "images/S.jpg",
-            "images/T.jpg",
-            "images/U.jpg",
-            "images/V.jpg",
-            "images/W.jpg",
-            "images/X.jpg",
-            "images/Y.jpg",
-            "images/Z.jpg"
-        ];
+        const dayImages = [...Array(26).keys()].map(i => `images/${String.fromCharCode(65 + i)}.jpg`);
+        const nightImages = [...Array(26).keys()].map(i => `images/${String.fromCharCode(65 + i)}.jpg`);
 
         function toggleDarkMode() {
-            document.body.classList.toggle("dark-mode");
+            document.body.classList.toggle("light-mode");
             isDarkMode = !isDarkMode;
-            
-            // Change the emoji icon based on mode
             document.getElementById("modeIcon").textContent = isDarkMode ? "☾" : "☀︎";
         }
 
         function displayImage() {
             const input = document.getElementById("charInput").value.toUpperCase();
             const imgElement = document.getElementById("displayedImage");
-            const index = input.charCodeAt(0) - 65; // Get index from A-Z
-
+            const index = input.charCodeAt(0) - 65;
             const images = isDarkMode ? nightImages : dayImages;
 
             if (index >= 0 && index < images.length) {
@@ -206,9 +145,6 @@
                 imgElement.style.display = "block";
             }
         }
-
-
     </script>
-
 </body>
 </html>
