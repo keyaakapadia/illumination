@@ -1,150 +1,254 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>on/off</title>
-    <link rel="stylesheet" href="home.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #121212;
-            color: #ffffff;
-            text-align: center;
-            transition: background 0.3s, color 0.3s;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>between states</title>
+  <link rel="stylesheet" href="home.css" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-        .light-mode {
-            background-color: #ffffff;
-            color: #000000;
-        }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: #121212;
+      color: #ffffff;
+      transition: background 0.3s, color 0.3s;
+      overflow: hidden;
+      position: relative;
+    }
 
-        .toggle-container {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
+    .light-mode {
+      background: #f7f7f4;
+      color: #111111;
+    }
 
-        .toggle-switch {
-            width: 50px;
-            height: 25px;
-            background-color: #666;
-            border-radius: 25px;
-            position: relative;
-            transition: background 0.2s;
-        }
+    .toggle-container {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      z-index: 10;
+    }
 
-        .toggle-switch::before {
-            content: "";
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: white;
-            border-radius: 50%;
-            top: 50%;
-            left: 25px;
-            transform: translateY(-50%);
-            transition: 0.3s;
-        }
+    .toggle-switch {
+      width: 52px;
+      height: 28px;
+      background-color: #666;
+      border-radius: 999px;
+      position: relative;
+      transition: background 0.3s ease;
+    }
 
-        .light-mode .toggle-switch {
-            background-color: #ccc;
-        }
+    .toggle-switch::before {
+      content: "";
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      background-color: white;
+      border-radius: 50%;
+      top: 3px;
+      left: 27px;
+      transition: 0.3s ease;
+    }
 
-        .light-mode .toggle-switch::before {
-            left: 5px;
-        }
+    .light-mode .toggle-switch {
+      background-color: #d3d3d3;
+    }
 
-        .sun-moon {
-            font-size: 20px;
-            margin-left: 10px;
-            transition: 0.3s;
-        }
+    .light-mode .toggle-switch::before {
+      left: 3px;
+    }
 
-        .input-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            margin-top: 50px;
-            border-radius: 25px;
-        }
+    .sun-moon {
+      font-size: 18px;
+    }
 
-        input {
-            padding: 10px;
-            font-size: 18px;
-        }
+    .main {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      position: relative;
+      z-index: 2;
+    }
 
-        button {
-            padding: 10px;
-            font-size: 18px;
-            cursor: pointer;
-            border-radius: 25px;
-        }
+    .title {
+      font-size: 18px;
+      letter-spacing: 0.14em;
+      text-transform: lowercase;
+      margin-bottom: 20px;
+      opacity: 0.8;
+    }
 
-        .displayimage img {
-            width: 100%;
-            height: 100%;
-            display: none; /* Initially hidden */
-            mix-blend-mode: hard-light;
-            opacity: 1;
-            position: absolute; 
-            top: 0;
-            left: 0;
-            z-index: -1; 
-        }
+    .input-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
 
-        @media (max-width: 480px) {
-            .displayimage img {
-                background-size: contain;
-            }
-        }
-    </style>
+    .light-mode .input-container {
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    select {
+      padding: 14px 18px;
+      min-width: 220px;
+      border-radius: 999px;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      background: transparent;
+      color: inherit;
+      appearance: none;
+      cursor: pointer;
+    }
+
+    button {
+      padding: 14px 20px;
+      border: none;
+      border-radius: 999px;
+      font-size: 15px;
+      cursor: pointer;
+      background: #ffffff;
+      color: #111111;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      opacity: 0.92;
+    }
+
+    .light-mode button {
+      background: #111111;
+      color: #ffffff;
+    }
+
+    .helper {
+      margin-top: 14px;
+      font-size: 13px;
+      opacity: 0.65;
+      text-align: center;
+    }
+
+    .displayimage img {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      display: none;
+      mix-blend-mode: hard-light;
+      opacity: 1;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+
+    @media (max-width: 600px) {
+      .input-container {
+        flex-direction: column;
+        border-radius: 24px;
+        width: 100%;
+        max-width: 320px;
+      }
+
+      select,
+      button {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 <body class="dark-mode">
-    <div class="toggle-container" onclick="toggleDarkMode()">
-        <div class="toggle-switch"></div>
-        <span class="sun-moon" id="modeIcon">☾</span>
-    </div>
+  <div class="toggle-container" onclick="toggleDarkMode()">
+    <div class="toggle-switch"></div>
+    <span class="sun-moon" id="modeIcon">☾</span>
+  </div>
+
+  <div class="main">
+    <div class="title">between states</div>
 
     <div class="input-container">
-        <input type="text" id="charInput" maxlength="1" placeholder="Enter a letter">
-        <button onclick="displayImage()" id="submitButton">Show Image</button>
+      <select id="stateInput">
+        <option value="">enter a feeling</option>
+        <option value="calm">calm</option>
+        <option value="heavy">heavy</option>
+        <option value="restless">restless</option>
+        <option value="clear">clear</option>
+        <option value="hopeful">hopeful</option>
+        <option value="numb">numb</option>
+        <option value="distant">distant</option>
+        <option value="awake">awake</option>
+      </select>
+      <button onclick="displayImage()">reveal</button>
     </div>
 
-    <div class="displayimage">
-        <img id="displayedImage">
-    </div>
+    <div class="helper">the same feeling shifts in light and dark</div>
+  </div>
 
-    <script>
-        let isDarkMode = true;
+  <div class="displayimage">
+    <img id="displayedImage" alt="Selected state image" />
+  </div>
 
-        const dayImages = [...Array(26).keys()].map(i => `images/${String.fromCharCode(65 + i)}.jpg`);
-        const nightImages = [...Array(26).keys()].map(i => `images/${String.fromCharCode(65 + i)}.jpg`);
+  <script>
+    let isDarkMode = true;
 
-        function toggleDarkMode() {
-            document.body.classList.toggle("light-mode");
-            isDarkMode = !isDarkMode;
-            document.getElementById("modeIcon").textContent = isDarkMode ? "☾" : "☀︎";
-        }
+    const lightImages = {
+      calm: "images/light-calm.jpg",
+      heavy: "images/light-heavy.jpg",
+      restless: "images/light-restless.jpg",
+      clear: "images/light-clear.jpg",
+      hopeful: "images/light-hopeful.jpg",
+      numb: "images/light-numb.jpg",
+      distant: "images/light-distant.jpg",
+      awake: "images/light-awake.jpg"
+    };
 
-        function displayImage() {
-            const input = document.getElementById("charInput").value.toUpperCase();
-            const imgElement = document.getElementById("displayedImage");
-            const index = input.charCodeAt(0) - 65;
-            const images = isDarkMode ? nightImages : dayImages;
+    const darkImages = {
+      calm: "images/dark-calm.jpg",
+      heavy: "images/dark-heavy.jpg",
+      restless: "images/dark-restless.jpg",
+      clear: "images/dark-clear.jpg",
+      hopeful: "images/dark-hopeful.jpg",
+      numb: "images/dark-numb.jpg",
+      distant: "images/dark-distant.jpg",
+      awake: "images/dark-awake.jpg"
+    };
 
-            if (index >= 0 && index < images.length) {
-                imgElement.src = images[index];
-                imgElement.style.display = "block";
-            } else {
-                imgElement.src = "black.jpg";
-                imgElement.style.display = "block";
-            }
-        }
-    </script>
+    function toggleDarkMode() {
+      document.body.classList.toggle("light-mode");
+      isDarkMode = !isDarkMode;
+      document.getElementById("modeIcon").textContent = isDarkMode ? "☾" : "☀︎";
+    }
+
+    function displayImage() {
+      const input = document.getElementById("stateInput").value;
+      const imgElement = document.getElementById("displayedImage");
+      const images = isDarkMode ? darkImages : lightImages;
+
+      if (input && images[input]) {
+        imgElement.src = images[input];
+        imgElement.style.display = "block";
+      } else {
+        imgElement.style.display = "none";
+      }
+    }
+  </script>
 </body>
 </html>
